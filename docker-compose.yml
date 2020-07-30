@@ -1,0 +1,22 @@
+version: "3"
+services:
+  replicator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./startup.sh:/startup.sh
+      - ./bucardorc:/tmp/bucardorc
+    environment:
+      - DST_HOST=<target_fqdn_hostname>
+      - DST_PORT=5432
+      - DST_DB=<target_database_name>
+      - DST_USER=<target_master_user>
+      - DST_PASS=<target_master_password>
+
+      - SRC_HOST=<source_fqdn_hostname>
+      - SRC_PORT=5432
+      - SRC_DB=<source_database_name>
+      - SRC_USER=<source_master_user>
+      - SRC_PASS=<source_master_password>
+      - TABLES=<space delimited list of table names> # i've only tested with one table name
