@@ -10,6 +10,11 @@ echo "install bucardo database"
 bucardo --bucardorc /tmp/bucardorc install --batch
 bucardo show all # should show a config
 
+echo "fetching tables to migrate"
+TABLES=`export PGPASSWORD=$SRC_PASS;psql -U $SRC_USER -h $SRC_HOST -d $SRC_DB -t -c "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' GROUP BY table_name;"`
+
+echo "tables to migrate are: " ${TABLES}
+
 echo "Create the source and target database objects"
 bucardo add db benchsrc host=$SRC_HOST dbname=$SRC_DB user=$SRC_USER pass=$SRC_PASS
 bucardo add db benchdst host=$DST_HOST dbname=$DST_DB user=$DST_USER pass=$DST_PASS
